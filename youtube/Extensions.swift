@@ -1,10 +1,3 @@
-//
-//  Extensions.swift
-//  youtube
-//
-//  Created by Brian Voong on 6/3/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
-//
 
 import UIKit
 
@@ -15,14 +8,53 @@ extension UIColor {
 }
 
 extension UIView {
-    func addConstraintsWithFormat(format: String, views: UIView...) {
+    func addConstraintsWithFormat(_ format: String, views: UIView...) {
         var viewsDictionary = [String: UIView]()
-        for (index, view) in views.enumerate() {
+        for (index, view) in views.enumerated() {
             let key = "v\(index)"
             view.translatesAutoresizingMaskIntoConstraints = false
             viewsDictionary[key] = view
         }
         
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
     }
+}
+
+let imageCache: AnyObject = NSCache<AnyObject, AnyObject>()
+
+class CustomImageView: UIImageView {
+    var imageUrlString: String?
+    
+    func loadImageUingURLString(urlString: String){
+        imageUrlString = urlString
+     
+            let url = URL(string: urlString)
+        image = nil
+        if let imageFromCache = imageCache.object(forKey: urlString) as? UIImage{
+            
+            self.image = imageFromCache
+            return
+        }
+            URLSession.shared.dataTask(with: url!,completionHandler: { (data,responses,error) in
+                if  error != nil{
+                    
+                    print(error!)
+                    return
+                }
+                DispatchQueue.main.async {
+                    
+                   let imageToCache  = UIImage(data: data!)
+                    if self.imageUrlString == urlString{
+                        
+                          self.image = imageToCache
+                    }
+                    
+                    imageCache.set(imageToCache!, forKey: urlString)
+                  
+                }
+                
+                
+                }).resume()
+        }
+        
 }
