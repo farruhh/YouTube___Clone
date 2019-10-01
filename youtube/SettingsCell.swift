@@ -13,6 +13,6 @@ class SettingsCell: BaseCell {
     override func setupViews() {
         super.setupViews()
         
-        backgroundColor = UIColor.blue
+        backgroundColor = UIColor.red
     }
 }
