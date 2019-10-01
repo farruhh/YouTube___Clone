@@ -114,10 +114,13 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.rightBarButtonItems = [moreButton, searchBarButtonItem]
     }
     
-    @objc func handleMore() {
-        
-    }
+ 
+    let settingsLauncher = SettingsLauncher()
     
+    @objc func handleMore() {
+     
+        settingsLauncher.ShowSettings()
+    }
     @objc func handleSearch() {
         print(123)
     }
