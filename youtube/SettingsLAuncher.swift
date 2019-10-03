@@ -22,7 +22,7 @@ class Setting: NSObject {
 class SettingsLauncher: NSObject, UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
     
      let cellid = "cellId"
-    
+    let cellheight: CGFloat = 50
     
     let darkView = UIView()
     
@@ -57,17 +57,17 @@ class SettingsLauncher: NSObject, UICollectionViewDataSource,UICollectionViewDel
             window.addSubview(darkView)
             window.addSubview(collectionView)
             
-            let cv_position_height: CGFloat = 250
+            let height: CGFloat = CGFloat(settings.count) * cellheight
             
-            let  cv_position_bottom = window.frame.height - cv_position_height
+            let  y = window.frame.height - height
             
-            collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: cv_position_bottom)
+            collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: y)
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
                 self.darkView.alpha = 1
                 
-                self.collectionView.frame = CGRect(x: 0, y: cv_position_bottom, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+                self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
                 
                 
             }, completion: nil)
@@ -102,7 +102,7 @@ class SettingsLauncher: NSObject, UICollectionViewDataSource,UICollectionViewDel
        }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 50)
+        return CGSize(width: collectionView.frame.width, height: cellheight)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         

@@ -9,6 +9,16 @@
 import UIKit
 
 class SettingsCell: BaseCell {
+    
+    override var isHighlighted: Bool {
+        
+        didSet{
+            
+            backgroundColor = isHighlighted ? UIColor.darkGray : UIColor.white
+            
+            SettingLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+        }
+    }
     var setting: Setting? {
         didSet{
            
@@ -16,8 +26,8 @@ class SettingsCell: BaseCell {
             
         
             if let imageName = setting?.image_name{
-            SettingsIcon.image = UIImage(named: imageName)
-                
+                SettingsIcon.image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal)
+                SettingsIcon.tintColor = UIColor.brown
             }
             
         }
@@ -25,6 +35,7 @@ class SettingsCell: BaseCell {
     let SettingLabel: UILabel = {
         let label = UILabel()
         label.text = "Settings"
+        label.font = UIFont.systemFont(ofSize: 13)
         
         return label
     }()
@@ -42,9 +53,9 @@ class SettingsCell: BaseCell {
     addSubview(SettingLabel)
         addSubview(SettingsIcon)
       
-        addConstraintsWithFormat("H:|-8-[v0(30)]-8-[v1]", views: SettingsIcon,SettingLabel)
+        addConstraintsWithFormat("H:|-12-[v0(20)]-8-[v1]", views: SettingsIcon,SettingLabel)
         addConstraintsWithFormat("V:|[v0]|", views: SettingLabel)
-        addConstraintsWithFormat("V:[v0(30)]", views: SettingsIcon)
+        addConstraintsWithFormat("V:[v0(10)]", views: SettingsIcon)
     
     addConstraint(NSLayoutConstraint(item: SettingsIcon, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
     }
